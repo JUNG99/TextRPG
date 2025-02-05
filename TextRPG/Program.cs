@@ -30,7 +30,7 @@ namespace TextRPG
                 }
                 else
                 {
-                    Console.Write("잘못된 입력입니다. 다시 선택하세요 (1: 전사 / 2: 도적");
+                    Console.Write("잘못된 입력입니다. 다시 선택하세요 (1: 전사 / 2: 마법사");
                 }    
             }
 
