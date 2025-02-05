@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Security.Cryptography.X509Certificates;
 
 namespace TextRPG
 {
@@ -30,7 +32,7 @@ namespace TextRPG
                 }
                 else
                 {
-                    Console.Write("잘못된 입력입니다. 다시 선택하세요 (1: 전사 / 2: 마법사");
+                    Console.Write("잘못된 입력입니다. 다시 선택하세요 (1: 전사 / 2: 마법사):");
                 }    
             }
 
@@ -68,6 +70,15 @@ namespace TextRPG
             public int Gold { get; set; } = 9999;
             public List<string> Inventory { get; set; } = new List<string>();
             public List<string> EquippedItem { get; set; } = new List<string>();
+
+            public int BaseAttack = 10;
+            public int BaseDefense = 5;
+
+            public Player()
+            {
+                Attack = BaseAttack;
+                Defense = BaseDefense;
+            }
 
             public void ShowStatus()
             {
@@ -160,24 +171,38 @@ namespace TextRPG
                         EquippedItem.Add(selectedItem);
                         Console.WriteLine($"{selectedItem}을(를) 장착했습니다.");
                     }
+
+                    UpdateStatus();
                 }
                 else
                 {
                     Console.WriteLine("잘못된 입력입니다.");
                 }
             }           
+            private void UpdateStatus()
+            {
+                Attack = Attack += Attack;
+                Defense = Defense += Defense;
+
+                foreach (var item in EquippedItem)
+                {
+                    var stats = Shop.GetItemStats(item);
+                    Attack += stats.Attack;
+                    Defense += stats.Defense;
+                }
+            }
         }
 
         class Shop
         {
-            private static Dictionary<string, (int Price, string Description)> items = new Dictionary<string, (int, string)>
+            private static Dictionary<string, (int Price, int Attack, int Defense, string Description)> items = new Dictionary<string, (int, int, int, string)>
         {
-            { "수련자 갑옷", (1000, "방어력 +5 | 수련에 도움을 주는 갑옷입니다.") },
-            { "무쇠 갑옷", (1500, "방어력 +9 | 무쇠로 만들어져 튼튼한 갑옷입니다.") },
-            { "스파르타의 갑옷", (3500, "방어력 +15 | 스파르타의 전사들이 사용했다는 전설의 갑옷입니다.") },
-            { "낡은 검", (600, "공격력 +2 | 쉽게 볼 수 있는 낡은 검 입니다.") },
-            { "청동 도끼", (1500, "공격력 +5 | 어디선가 사용됐던거 같은 도끼입니다.") },
-            { "스파르타의 창", (3500, "공격력 +7 | 스파르타의 전사들이 사용했다는 전설의 창입니다.") }
+            { "수련자 갑옷", (1000,0,5, "방어력 +5 | 수련에 도움을 주는 갑옷입니다.") },
+            { "무쇠 갑옷", (1500,0,9, "방어력 +9 | 무쇠로 만들어져 튼튼한 갑옷입니다.") },
+            { "스파르타의 갑옷", (3500,0,15, "방어력 +15 | 스파르타의 전사들이 사용했다는 전설의 갑옷입니다.") },
+            { "낡은 검", (600,2,0, "공격력 +2 | 쉽게 볼 수 있는 낡은 검 입니다.") },
+            { "청동 도끼", (1500,5,0, "공격력 +5 | 어디선가 사용됐던거 같은 도끼입니다.") },
+            { "스파르타의 창", (3500,7,0, "공격력 +7 | 스파르타의 전사들이 사용했다는 전설의 창입니다.") }
         };
             public static string GetItemInfo(string itemName)
             {
@@ -245,7 +270,15 @@ namespace TextRPG
                     }
 
                 }
-
+                
+            }
+            public static (int Attack, int Defense) GetItemStats(string itemName)
+            {
+                return items.ContainsKey(itemName) ? (items[itemName].Attack, items[itemName].Defense) : (0, 0);    
+            }
+            public static string GetItemDescription(string itemName)
+            {
+                return items.ContainsKey(itemName) ? items[itemName].Description : "설명X";
             }
         }
         
