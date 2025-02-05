@@ -94,6 +94,10 @@ namespace TextRPG
                     Console.WriteLine("\n 휴식으로 체력이 회복되었습니다.");
                     Console.WriteLine($"현재 체력 : {HP} , 남은 골드 {Gold} G");
                 }
+                else
+                {
+                    Console.WriteLine("\n Gold가 충분하지 않습니다.");
+                }
             }
 
             public void ShowStatus()
