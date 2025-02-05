@@ -181,8 +181,8 @@ namespace TextRPG
             }           
             private void UpdateStatus()
             {
-                Attack = Attack += BaseAttack;
-                Defense = Defense += BaseDefense;
+                Attack = BaseAttack;
+                Defense = BaseDefense;
 
                 foreach (var item in EquippedItem)
                 {
