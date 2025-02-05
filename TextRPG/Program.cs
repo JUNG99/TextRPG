@@ -67,7 +67,7 @@ namespace TextRPG
             public int HP { get; set; } = 100;
             public int Gold { get; set; } = 9999;
             public List<string> Inventory { get; set; } = new List<string>();
-            public string EquippedItem { get; set; } = null;
+            public List<string> EquippedItem { get; set; } = new List<string>();
 
             public void ShowStatus()
             {
@@ -103,7 +103,7 @@ namespace TextRPG
                         Console.WriteLine("[아이템 목록]");
                         foreach (var item in Inventory)
                         {
-                            string status = (item == EquippedItem) ? "[E] " : "";
+                            string status = (EquippedItem.Contains(item)) ? "[E] " : "";
                             Console.WriteLine($"- {status}{item}");
                         }
                     }
@@ -133,7 +133,7 @@ namespace TextRPG
 
                 foreach (var item in Inventory)
                 {
-                    string status = (item == EquippedItem) ? "[E] " : "";
+                    string status = (EquippedItem.Contains(item) ? "[E] " : "");
                     string itemInfo = Shop.GetItemInfo(item);
                     Console.WriteLine($"{index}. {status}{item}-{itemInfo}");
                     
@@ -141,7 +141,7 @@ namespace TextRPG
                 }
                 Console.WriteLine("0. 취소");
 
-                Console.Write("장착할 아이템 번호를 입력하세요: ");
+                Console.Write("장착/해제할 아이템 번호를 입력하세요: ");
 
                 string input = Console.ReadLine();
 
@@ -150,14 +150,14 @@ namespace TextRPG
                 if (int.TryParse(input, out int choice) && choice > 0 && choice <= Inventory.Count)
                 {
                     string selectedItem = Inventory[choice - 1];
-                    if (EquippedItem == selectedItem)
+                    if (EquippedItem.Contains(selectedItem))
                     {
                         Console.WriteLine($"{selectedItem}을(를) 해제했습니다.");
-                        EquippedItem = null;
+                        EquippedItem.Remove(selectedItem);
                     }
                     else
                     {
-                        EquippedItem = selectedItem;
+                        EquippedItem.Add(selectedItem);
                         Console.WriteLine($"{selectedItem}을(를) 장착했습니다.");
                     }
                 }
