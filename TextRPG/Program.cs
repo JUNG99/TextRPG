@@ -86,11 +86,17 @@ namespace TextRPG
             {
                 int RestCost = 500;
                 int Heal = 50;
+                int MaxHP = 100;
 
                 if (Gold >= RestCost)
                 {
                     Gold -= RestCost;
                     HP += Heal;
+                    
+
+                    if (HP > MaxHP)
+                        HP = MaxHP;
+
                     Console.WriteLine("\n 휴식으로 체력이 회복되었습니다.");
                     Console.WriteLine($"현재 체력 : {HP} , 남은 골드 {Gold} G");
                 }
@@ -98,6 +104,7 @@ namespace TextRPG
                 {
                     Console.WriteLine("\n Gold가 충분하지 않습니다.");
                 }
+                
             }
 
             public void ShowStatus()
