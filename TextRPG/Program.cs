@@ -65,7 +65,7 @@ namespace TextRPG
             public int Attack { get; set; } = 10;
             public int Defense { get; set; } = 5;
             public int HP { get; set; } = 100;
-            public int Gold { get; set; } = 1500;
+            public int Gold { get; set; } = 9999;
             public List<string> Inventory { get; set; } = new List<string>();
             public string EquippedItem { get; set; } = null;
 
@@ -128,18 +128,25 @@ namespace TextRPG
                 }
 
                 Console.WriteLine("\n==== [장착 관리] ====");
+
                 int index = 1;
+
                 foreach (var item in Inventory)
                 {
                     string status = (item == EquippedItem) ? "[E] " : "";
-                    Console.WriteLine($"{index}. {status}{item}");
+                    string itemInfo = Shop.GetItemInfo(item);
+                    Console.WriteLine($"{index}. {status}{item}-{itemInfo}");
+                    
                     index++;
                 }
                 Console.WriteLine("0. 취소");
+
                 Console.Write("장착할 아이템 번호를 입력하세요: ");
 
                 string input = Console.ReadLine();
+
                 if (input == "0") return;
+
                 if (int.TryParse(input, out int choice) && choice > 0 && choice <= Inventory.Count)
                 {
                     string selectedItem = Inventory[choice - 1];
@@ -158,12 +165,12 @@ namespace TextRPG
                 {
                     Console.WriteLine("잘못된 입력입니다.");
                 }
-            }
+            }           
         }
 
         class Shop
         {
-            private Dictionary<string, (int Price, string Description)> items = new Dictionary<string, (int, string)>
+            private static Dictionary<string, (int Price, string Description)> items = new Dictionary<string, (int, string)>
         {
             { "수련자 갑옷", (1000, "방어력 +5 | 수련에 도움을 주는 갑옷입니다.") },
             { "무쇠 갑옷", (1500, "방어력 +9 | 무쇠로 만들어져 튼튼한 갑옷입니다.") },
@@ -172,7 +179,18 @@ namespace TextRPG
             { "청동 도끼", (1500, "공격력 +5 | 어디선가 사용됐던거 같은 도끼입니다.") },
             { "스파르타의 창", (3500, "공격력 +7 | 스파르타의 전사들이 사용했다는 전설의 창입니다.") }
         };
+            public static string GetItemInfo(string itemName)
+            {
+                if (items.ContainsKey(itemName))
+                {
+                    return items[itemName].Description; 
+                }
+                return "설명x";
+            }
+            
 
+           
+        
             public void OpenShop(Player player)
             {
                 while (true)
@@ -188,6 +206,7 @@ namespace TextRPG
                         Console.WriteLine($"{index}. {item.Key} | {item.Value.Description} | {status}");
                         index++;
                     }
+
 
                     Console.WriteLine("\n0. 나가기");
                     Console.Write("구매할 아이템 번호를 입력하세요: ");
@@ -224,8 +243,11 @@ namespace TextRPG
                     {
                         Console.WriteLine("잘못된 입력입니다. 숫자를 입력하세요.");
                     }
+
                 }
+
             }
         }
+        
     }
 }
