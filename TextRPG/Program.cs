@@ -11,7 +11,7 @@ namespace TextRPG
             Console.Write("당신의 이름을 입력하세요: ");
             string playerName = Console.ReadLine();
 
-            Console.Write("직업을 선택하세요 (1: 전사 / 2: 도적): ");
+            Console.Write("직업을 선택하세요 (1: 전사 / 2: 마법사): ");
             string playerJob = "";
 
             while (true)
@@ -25,7 +25,7 @@ namespace TextRPG
                 }    
                 else if (jobChoice == "2")
                 {
-                    playerJob = "도적";
+                    playerJob = "마법사";
                     break;
                 }
                 else
