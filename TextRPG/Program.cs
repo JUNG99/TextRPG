@@ -41,14 +41,15 @@ namespace TextRPG
 
             while (true)
             {
-                Console.WriteLine("\n1. 상태 보기 \n2. 인벤토리 \n3. 상점 \n4. 종료");
+                Console.WriteLine("\n1. 상태 보기 \n2. 인벤토리 \n3. 상점 \n4. 휴식 \n5. 종료");
                 Console.Write("원하는 행동을 입력하세요: ");
                 string choice = Console.ReadLine();
 
                 if (choice == "1") player.ShowStatus();
                 else if (choice == "2") player.ShowInventory();
                 else if (choice == "3") shop.OpenShop(player);
-                else if (choice == "4")
+                else if (choice == "4") player.Rest();
+                else if (choice == "5") 
                 {
                     Console.WriteLine("게임을 종료합니다.");
                     break;
@@ -74,10 +75,25 @@ namespace TextRPG
             public int BaseAttack = 10;
             public int BaseDefense = 5;
 
+            
             public Player()
             {
                 Attack = BaseAttack;
                 Defense = BaseDefense;
+            }
+
+            public void Rest()
+            {
+                int RestCost = 500;
+                int Heal = 50;
+
+                if (Gold >= RestCost)
+                {
+                    Gold -= RestCost;
+                    HP += Heal;
+                    Console.WriteLine("\n 휴식으로 체력이 회복되었습니다.");
+                    Console.WriteLine($"현재 체력 : {HP} , 남은 골드 {Gold} G");
+                }
             }
 
             public void ShowStatus()
